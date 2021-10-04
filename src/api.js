@@ -7,7 +7,7 @@ export const api = axios.create({
     baseURL: apiBaseURL,
 });
 
-const developer = "Example";
+const developer = "maxonline";
 
 export async function getTasksAndPages(url) {
     const params = { developer };
