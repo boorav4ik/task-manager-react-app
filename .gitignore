@@ -1,0 +1,15 @@
+*.pyc
+
+.vscode/
+
+env/
+
+*node_modules/
+
+*dist/
+
+*build/
+
+*env/
+
+.coverage
