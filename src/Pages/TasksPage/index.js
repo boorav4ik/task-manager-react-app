@@ -5,8 +5,9 @@ import BottomPanel from "../../components/BottomPanel";
 import { Stack } from "@mui/material";
 import { createPost, editPost, getTasksAndPages } from "../../api";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentPageURL } from "../../app/reduxe/actions";
+import { setCurrentPageURL } from "../../reduxe/actions";
 import escapeHtml from "../../utils/functions/escapeHtml";
+import PropTypes from "prop-types";
 
 function getSearchParams(locationSearch) {
     const searchParams = new URLSearchParams(locationSearch);
@@ -45,10 +46,11 @@ const Index = ({ history, location }) => {
         setTotalPageCount(totalPageCount);
     }
 
-    async function handleCreateTask(data) {
+    async function handleCreateTask({ username = "", email = "", text = "" }) {
         const createResponse = await createPost({
-            ...data,
-            text: escapeHtml(data.text),
+            username,
+            email,
+            text: escapeHtml(text),
         });
         if (createResponse.data.status === "error") {
             return createResponse.data.message;
@@ -113,7 +115,14 @@ const Index = ({ history, location }) => {
     );
 };
 
+Index.propTypes = {
+    history: PropTypes.object,
+    location: PropTypes.object,
+};
+
 Index.defaultProps = {
     history: {},
+    location: {},
 };
+
 export default Index;

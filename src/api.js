@@ -7,7 +7,7 @@ export const api = axios.create({
     baseURL: apiBaseURL,
 });
 
-const developer = "maxonline";
+const developer = "Example";
 
 export async function getTasksAndPages(url) {
     const params = { developer };
@@ -24,7 +24,7 @@ export async function getTasksAndPages(url) {
     }
 }
 
-export async function loginPost(username, password) {
+export async function loginPost({ username = "", password = "" }) {
     try {
         const data = new FormData();
         data.append("username", username);

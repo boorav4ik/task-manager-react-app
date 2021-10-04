@@ -15,3 +15,7 @@ export function getToken() {
     const { token } = authData ? JSON.parse(authData) : "";
     return token;
 }
+
+export function clearAuthData() {
+    localStorage.removeItem("authData");
+}

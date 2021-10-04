@@ -3,7 +3,7 @@ import { Stack } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { setUserIsLogin } from "../../app/reduxe/actions";
+import { setUserIsLogin } from "../../reduxe/actions";
 import { checkAuthUsername } from "../../utils/functions/localstoreFunctions";
 // import { checkAuthUsername } from "../../utils/functions/localstoreFunctions";
 

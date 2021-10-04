@@ -5,6 +5,7 @@ import StatusSelectedMenu from "../StatusSelectedMenu";
 import { Fab, Typography } from "@material-ui/core";
 import Edit from "@material-ui/icons/Edit";
 import { CheckCircle } from "@material-ui/icons";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
     noBorder: {
@@ -64,4 +65,15 @@ const Index = ({ data, userIsLogin, handleEditTask }) => {
     );
 };
 
+Index.propTypes = {
+    data: PropTypes.shape({
+        id: PropTypes.number,
+        username: PropTypes.string,
+        email: PropTypes.string,
+        status: PropTypes.number,
+        text: PropTypes.string,
+    }),
+    userIsLogin: PropTypes.bool,
+    handleEditTask: PropTypes.func,
+};
 export default Index;

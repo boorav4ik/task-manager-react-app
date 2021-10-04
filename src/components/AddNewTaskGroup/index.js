@@ -1,13 +1,16 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import React, { useState } from "react";
-const textFieldsList = [
+import PropTypes from "prop-types";
+import TextFieldGroup from "../TextFieldGroup";
+
+const textFieldList = [
     { name: "username", label: "Name" },
     { name: "email", label: "E-mail" },
     { name: "text", label: "Task discription", rows: 4, multiline: true },
 ];
 
 const Index = ({ onSubmitClick }) => {
-    const [errorsList, setErrorList] = useState({});
+    const [errorList, setErrorList] = useState({});
     const [taskObject, setTaskObject] = useState({});
 
     const handleChange = ({ target }) =>
@@ -17,21 +20,20 @@ const Index = ({ onSubmitClick }) => {
 
     return (
         <Stack spacing={1} justifyContent="space-between">
-            {textFieldsList.map(({ name, ...props }) => (
-                <TextField
-                    key={name}
-                    name={name}
-                    {...props}
-                    error={Boolean(errorsList[name])}
-                    onChange={handleChange}
-                    helperText={errorsList[name] ?? " "}
-                />
-            ))}
+            <TextFieldGroup
+                fieldList={textFieldList}
+                onChange={handleChange}
+                errorList={errorList}
+            />
             <Button variant="contained" onClick={onSubmit}>
                 Sabmit
             </Button>
         </Stack>
     );
+};
+
+Index.propTypes = {
+    onSubmitClick: PropTypes.func,
 };
 
 export default Index;

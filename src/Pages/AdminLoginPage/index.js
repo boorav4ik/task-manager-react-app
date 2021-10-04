@@ -1,12 +1,16 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import AdminLoginForm from "../../components/AdminLoginForm";
+import PropTypes from "prop-types";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginPost } from "../../api";
-import { setUserIsLogin } from "../../app/reduxe/actions";
+import { setUserIsLogin } from "../../reduxe/actions";
 import {
     checkAuthUsername,
     saveAuthData,
+    clearAuthData,
 } from "../../utils/functions/localstoreFunctions";
+
+const OK = "ok";
 
 const Index = ({ history }) => {
     const { userIsLogin, currentPageUrl } = useSelector((state) => ({
@@ -14,29 +18,20 @@ const Index = ({ history }) => {
         currentPageUrl: state.currentPageUrl,
     }));
     const dispatch = useDispatch();
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState(false);
 
-    useEffect(() => {
-        const username = checkAuthUsername();
-        if (username) {
-            setUsername(username);
-        }
+    const username = checkAuthUsername();
+    console.log(username);
+    if (username) {
         dispatch(setUserIsLogin(Boolean(username)));
-    }, [dispatch]);
+    }
 
-    const onLoginClick = async () => {
-        const loginResponse = await loginPost(username, password);
-        if (
-            loginResponse.status === 200 &&
-            loginResponse.data.status === "ok"
-        ) {
+    const onLoginClick = async (data) => {
+        const loginResponse = await loginPost(data);
+        if (loginResponse.status === 200 && loginResponse.data.status === OK) {
             saveAuthData(username, loginResponse.data.message.token);
             dispatch(setUserIsLogin(true));
-            setError(false);
         } else {
-            setError(true);
+            return loginResponse.data.message;
         }
     };
 
@@ -44,69 +39,25 @@ const Index = ({ history }) => {
 
     const onLogoutClick = () => {
         dispatch(setUserIsLogin(false));
-        localStorage.removeItem("token");
-        localStorage.removeItem("authData");
+        clearAuthData();
     };
 
-    const handleChangeLogin = (event) => setUsername(event.target.value);
-    const handleChangePassword = (event) => setPassword(event.target.value);
-
     return (
-        <Stack
-            style={{ width: "100%", height: "90vh" }}
-            spacing={4}
-            justifyContent="center"
-            alignItems="center"
-        >
-            {userIsLogin ? (
-                <>
-                    <Typography>
-                        {`You are logged in as ${username}.`}
-                    </Typography>
-                    <Button variant="outlined" onClick={handleRedirectToMain}>
-                        Go back to the Task Page
-                    </Button>
-                    <Button variant="contained" onClick={onLogoutClick}>
-                        Logout
-                    </Button>
-                </>
-            ) : (
-                <>
-                    <Typography>Please log in:</Typography>
-                    <TextField
-                        key="username"
-                        label="Username"
-                        onChange={handleChangeLogin}
-                        error={error}
-                    />
-                    <TextField
-                        key="password"
-                        type="password"
-                        label="Password"
-                        onChange={handleChangePassword}
-                        error={error}
-                    />
-                    {error && (
-                        <Typography color="error">
-                            The data is incorrect
-                        </Typography>
-                    )}
-                    <Stack direction="row" spacing={2}>
-                        <Button onClick={onLoginClick} variant="outlined">
-                            Login
-                        </Button>
-                        <Button
-                            color="error"
-                            variant="outlined"
-                            onClick={handleRedirectToMain}
-                        >
-                            Cansel
-                        </Button>
-                    </Stack>
-                </>
-            )}
-        </Stack>
+        <AdminLoginForm
+            userData={userIsLogin ? { username } : {}}
+            onToMainClick={handleRedirectToMain}
+            onLogoutClick={onLogoutClick}
+            onLoginClick={onLoginClick}
+        />
     );
+};
+
+Index.propTypes = {
+    history: PropTypes.object,
+};
+
+Index.defaultProps = {
+    history: {},
 };
 
 export default Index;

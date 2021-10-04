@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { ExpandMore } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
+import PropTypes from "prop-types";
+
 const options = {
     0: "Task not completed",
     1: "Task not completed, edited by admin",
@@ -28,10 +30,6 @@ const CustomMenu = withStyles({
         border: "2px solid rgba(49, 54, 65, 1)",
         "& .MuiList-root": {
             padding: 0,
-            // "& .MuiListItem-root": {
-            // padding: "0 5px 0",
-            // minHeight: "auto",
-            // },
         },
     },
 })((props) => (
@@ -50,17 +48,15 @@ const CustomMenu = withStyles({
     />
 ));
 
-const Index = ({ value, onChange, isEditingEnabled = true }) => {
+const Index = ({ value, onChange, isEditingEnabled }) => {
     const classes = useStyles({ isEditingEnabled });
     const [anchorElement, setAnchorElement] = useState(null);
-    const [index, setIndex] = useState(value);
     const menuOpen = ({ currentTarget }) => {
         setAnchorElement(currentTarget);
     };
     const open = Boolean(anchorElement);
 
     const onMenuItemClick = (index) => {
-        setIndex(index);
         setAnchorElement(null);
         onChange(index);
     };
@@ -78,7 +74,7 @@ const Index = ({ value, onChange, isEditingEnabled = true }) => {
                     onClick={isEditingEnabled ? menuOpen : () => {}}
                     endIcon={isEditingEnabled ? <ExpandMore /> : undefined}
                 >
-                    {`Status: ${options[index]}`}
+                    {`Status: ${options[value]}`}
                 </Button>
                 {isEditingEnabled && (
                     <CustomMenu
@@ -94,7 +90,7 @@ const Index = ({ value, onChange, isEditingEnabled = true }) => {
                             <MenuItem
                                 key={key}
                                 className={classes.statusMenuItem}
-                                selected={key === index}
+                                selected={key === value}
                                 onClick={() => onMenuItemClick(key)}
                             >
                                 {options[key]}
@@ -106,5 +102,9 @@ const Index = ({ value, onChange, isEditingEnabled = true }) => {
         </>
     );
 };
-
+Index.propTypes = {
+    value: PropTypes.number,
+    onChange: PropTypes.func,
+    isEditingEnabled: PropTypes.bool,
+};
 export default Index;
