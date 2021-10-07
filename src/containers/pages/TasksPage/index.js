@@ -1,38 +1,39 @@
 import React, { useEffect, useState } from "react";
-import RightPanel from "../../components/RightPanel";
-import ContentView from "../../components/ContentView";
-import BottomPanel from "../../components/BottomPanel";
+import RightPanel from "../../../components/RightPanel";
+import ContentView from "../../../components/ContentView";
+import BottomPanel from "../../../components/BottomPanel";
 import { Stack } from "@mui/material";
-import { createPost, editPost, getTasksAndPages } from "../../api";
-import { useSelector, useDispatch } from "react-redux";
-import { setCurrentPageURL } from "../../reduxe/actions";
-import escapeHtml from "../../utils/functions/escapeHtml";
 import PropTypes from "prop-types";
+import { createPost, editPost, getTasksAndPages } from "../../../api";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrentPageURL, setUserData } from "../../../reduxe/actions";
+import escapeHtml from "../../../utils/functions/escapeHtml";
+import getSearchParams from "../../../utils/functions/getSearchParams";
+import createSearchParamsString from "../../../utils/functions/createSearchParamsString";
+import { clearSessionData } from "../../../utils/functions/localstoreFunctions";
+import { makeStyles } from "@material-ui/core/styles";
 
-function getSearchParams(locationSearch) {
-    const searchParams = new URLSearchParams(locationSearch);
-    const page = parseInt(searchParams.get("page"));
-    const sortDirection = searchParams.get("sort_direction");
-    const sortField = searchParams.get("sort_field");
-    return { page, sortDirection, sortField };
-}
+const useStyles = makeStyles({
+    taskPageStack: {
+        width: "100vw",
+        height: "90vh",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    taskConteiner: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "70%",
+        marginLeft: "10%",
+    },
+});
 
-function createSearchParamsString(newParams, oldParams) {
-    const searchParams = new URLSearchParams();
-    searchParams.append(
-        "sort_field",
-        newParams.sortField ?? oldParams.sortField
-    );
-    searchParams.append(
-        "sort_direction",
-        newParams.sortDirection ?? oldParams.sortDirection
-    );
-    searchParams.append("page", newParams.page ?? oldParams.page);
-    return `?${searchParams.toString()}`;
-}
+const ERROR = "error";
 
 const Index = ({ history, location }) => {
-    const userIsLogin = useSelector((state) => state.userIsLogin);
+    const classes = useStyles();
+    const userData = useSelector((state) => state.userData);
     const [tasks, setTasks] = useState([]);
     const [totalPageCount, setTotalPageCount] = useState(0);
     const dispatch = useDispatch();
@@ -67,34 +68,33 @@ const Index = ({ history, location }) => {
         history.push(curentPageUrl);
     };
 
-    const handleEditTask = (data) =>
-        editPost({ ...data, text: escapeHtml(data.text) });
+    const handleEditTask = async (data) => {
+        const editResponse = await editPost({
+            ...data,
+            text: escapeHtml(data.text),
+        });
+        if (
+            (editResponse.data.status =
+                ERROR && editResponse.data.message.token)
+        ) {
+            clearSessionData();
+            dispatch(setUserData({}));
+            history.push("/login/0");
+        } else {
+            uploadData();
+        }
+    };
 
     useEffect(() => {
         uploadData();
     }, [location.search]);
-
+    console.log(userData);
     return (
-        <Stack
-            style={{ width: "100vw", height: "90vh" }}
-            spacing={4}
-            justifyContent="center"
-            alignItems="center"
-        >
-            <Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-                style={{
-                    width: 800,
-                    height: "70%",
-                    marginLeft: "10%",
-                }}
-                spacing={4}
-            >
+        <Stack className={classes.taskPageStack} spacing={4}>
+            <Stack className={classes.taskConteiner} spacing={4}>
                 <ContentView
                     tasks={tasks}
-                    userIsLogin={userIsLogin}
+                    userIsLogin={Boolean(userData.username)}
                     handleEditTask={handleEditTask}
                 />
                 <RightPanel
@@ -107,9 +107,7 @@ const Index = ({ history, location }) => {
             <BottomPanel
                 totalPageCount={totalPageCount}
                 curentPage={searchParams.page}
-                onPageChange={(page) =>
-                    handleChangeSearchParams({ page: page })
-                }
+                onPageChange={(page) => handleChangeSearchParams({ page })}
             />
         </Stack>
     );

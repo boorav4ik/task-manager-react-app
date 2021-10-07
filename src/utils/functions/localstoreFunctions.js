@@ -1,21 +1,19 @@
-export function checkAuthUsername() {
-    const authData = localStorage.getItem("authData");
-    if (!authData) return false;
-    const { username } = JSON.parse(authData);
-    return username;
+const ITEM_NAME = "test-task-backend-session";
+
+export function setSessionData(username, token) {
+    localStorage.setItem(ITEM_NAME, JSON.stringify({ username, token }));
 }
 
-export function saveAuthData(username, token) {
-    const authData = JSON.stringify({ username, token });
-    localStorage.setItem("authData", authData);
+export function getSessionUsername() {
+    const authData = localStorage.getItem(ITEM_NAME);
+    return authData ? JSON.parse(authData)["username"] : null;
 }
 
-export function getToken() {
-    const authData = localStorage.getItem("authData");
-    const { token } = authData ? JSON.parse(authData) : "";
-    return token;
+export function getSessionToken() {
+    const authData = localStorage.getItem(ITEM_NAME);
+    return authData ? JSON.parse(authData)["token"] : null;
 }
 
-export function clearAuthData() {
-    localStorage.removeItem("authData");
+export function clearSessionData() {
+    localStorage.removeItem(ITEM_NAME);
 }

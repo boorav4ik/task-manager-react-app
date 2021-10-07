@@ -1,4 +1,4 @@
-export default function escapeHtml(text) {
+export default function (text) {
     return text
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")

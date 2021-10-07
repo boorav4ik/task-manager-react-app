@@ -3,6 +3,15 @@ import React from "react";
 import RadioButtons from "../RadioButtonsGroup";
 import AddNewTaskGroup from "../AddNewTaskGroup";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+    rightStack: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: "0 0 310px",
+    },
+});
 
 const Index = ({
     sortField,
@@ -10,12 +19,10 @@ const Index = ({
     handleChange,
     handleCreateTask,
 }) => {
+    const classes = useStyles();
+
     return (
-        <Stack
-            spacing={1}
-            justifyContent="space-between"
-            style={{ height: "100%", minWidth: 310 }}
-        >
+        <Stack spacing={1} className={classes.rightStack}>
             <RadioButtons
                 label="Sort Field"
                 options={["username", "email", "status"]}

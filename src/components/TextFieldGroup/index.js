@@ -17,7 +17,7 @@ const Index = ({ fieldList, onChange, errorList }) =>
 Index.propTypes = {
     fieldList: PropTypes.arrayOf(PropTypes.object),
     onChange: PropTypes.func,
-    errorList: PropTypes.arrayOf(PropTypes.object),
+    errorList: PropTypes.object,
 };
 
 export default Index;

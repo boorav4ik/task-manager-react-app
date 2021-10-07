@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "./utils/functions/localstoreFunctions";
+import { getSessionToken } from "./utils/functions/localstoreFunctions";
 
 export const apiBaseURL = "https://uxcandy.com/~shapoval/test-task-backend/v2";
 
@@ -64,7 +64,7 @@ export async function editPost({ id, text, taskStatus }) {
         data.append("id", id);
         data.append("text", text);
         data.append("status", taskStatus);
-        data.append("token", getToken());
+        data.append("token", getSessionToken());
         const config = {
             method: "post",
             url: `/edit/${id}?developer=${developer}`,

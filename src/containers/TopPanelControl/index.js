@@ -1,58 +1,24 @@
-import { Button, Typography } from "@material-ui/core";
-import { Stack } from "@mui/material";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { setUserIsLogin } from "../../reduxe/actions";
-import { checkAuthUsername } from "../../utils/functions/localstoreFunctions";
-// import { checkAuthUsername } from "../../utils/functions/localstoreFunctions";
+import { useSelector } from "react-redux";
+import { clearSessionData } from "../../utils/functions/localstoreFunctions";
+import TopPanel from "../../components/panels/TopPanel";
 
 const Index = () => {
-    const { userIsLogin, currentPage } = useSelector((state) => ({
-        userIsLogin: state.userIsLogin,
+    const { currentPage, userData } = useSelector((state) => ({
         currentPage: state.currentPage,
+        userData: state.userData,
     }));
-    const username = checkAuthUsername();
-    const history = useHistory();
-    const dispatch = useDispatch();
+
+    const { username } = userData;
+
+    const handleLogout = () => clearSessionData();
+
     return (
-        <Stack
-            style={{ width: "100%" }}
-            justifyContent="center"
-            direction="row"
-            spacing={2}
-        >
-            <Button
-                variant="outlined"
-                onClick={() => history.push(`/?page=${currentPage}`)}
-            >
-                Tasks
-            </Button>
-            <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                spacing={2}
-            >
-                {userIsLogin && username && (
-                    <Typography>Hello, {username}!</Typography>
-                )}
-                <Button
-                    onClick={() => {
-                        if (userIsLogin) {
-                            dispatch(setUserIsLogin(false));
-                            localStorage.removeItem("token");
-                            localStorage.removeItem("authData");
-                        } else {
-                            history.push("/admin");
-                        }
-                    }}
-                    variant="outlined"
-                >
-                    {userIsLogin ? "Logout" : "Login"}
-                </Button>
-            </Stack>
-        </Stack>
+        <TopPanel
+            username={username}
+            currentPage={currentPage}
+            handleLogout={handleLogout}
+        />
     );
 };
 

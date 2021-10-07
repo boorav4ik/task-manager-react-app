@@ -35,7 +35,7 @@ const CustomMenu = withStyles({
 })((props) => (
     <Menu
         elevation={0}
-        getContentAnchorEl={undefined}
+        getvontentanchorel={null}
         anchorOrigin={{
             vertical: "bottom",
             horizontal: "center",
@@ -55,7 +55,7 @@ const Index = ({ value, onChange, isEditingEnabled }) => {
         setAnchorElement(currentTarget);
     };
     const open = Boolean(anchorElement);
-
+    console.log(open);
     const onMenuItemClick = (index) => {
         setAnchorElement(null);
         onChange(index);

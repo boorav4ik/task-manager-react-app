@@ -14,6 +14,12 @@ const useStyles = makeStyles({
     marginLeftAuto: {
         marginLeft: "auto",
     },
+    contentViewItemStack: {
+        border: "2px solid gray",
+        padding: 4,
+        borderRadius: 4,
+        flexGrow: 1,
+    },
 });
 
 const Index = ({ data, userIsLogin, handleEditTask }) => {
@@ -22,9 +28,7 @@ const Index = ({ data, userIsLogin, handleEditTask }) => {
     const classes = useStyles();
     const [isEditingEnabled, setIsEditingEnabled] = useState(false);
     return (
-        <Stack
-            style={{ border: "2px solid gray", padding: 4, borderRadius: 4 }}
-        >
+        <Stack className={classes.contentViewItemStack}>
             <Typography>{`USERNAME: ${data.username} E-MAIL: ${data.email}`}</Typography>
             <TextField
                 variant="outlined"
