@@ -7,7 +7,8 @@ const Index = ({ totalPageCount, curentPage, onPageChange }) => (
     <Stack spacing={2} justifyContent="space-around">
         <Pagination
             count={totalPageCount}
-            defaultPage={curentPage}
+            // defaultPage={curentPage}
+            page={curentPage}
             shape="rounded"
             onChange={(event, value) => onPageChange(value)}
         />

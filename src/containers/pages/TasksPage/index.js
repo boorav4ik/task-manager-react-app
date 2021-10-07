@@ -88,7 +88,7 @@ const Index = ({ history, location }) => {
     useEffect(() => {
         uploadData();
     }, [location.search]);
-    console.log(userData);
+
     return (
         <Stack className={classes.taskPageStack} spacing={4}>
             <Stack className={classes.taskConteiner} spacing={4}>

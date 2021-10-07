@@ -1,5 +1,4 @@
 export default function (newParams, oldParams) {
-    console.log(newParams, oldParams);
     const searchParams = new URLSearchParams();
     searchParams.append(
         "sort_field",
