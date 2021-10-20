@@ -47,6 +47,7 @@ dir {
     border: 1px solid gray;
     flex-grow: 1;
     justify-content: space-between;
+    flex: 0 0 260px;
 }
 
 .content-space-between {
