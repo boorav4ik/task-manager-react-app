@@ -1,0 +1,76 @@
+body,
+dir {
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    width: 100vw;
+    height: 100vh;
+    background-color: #fafafa;
+}
+
+.app {
+    width: 1200px;
+    height: 100%;
+    margin: auto;
+    display: flex;
+}
+
+.p-1 {
+    padding: 1rem;
+}
+
+.flex-row {
+    display: flex;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.f-1 {
+    flex: 1;
+}
+
+.left-panel {
+    margin: 0;
+    flex: 0 0 200px;
+}
+
+.left-panel > :not(:first-child) {
+    margin-top: 1rem;
+}
+
+.task-box {
+    border: 1px solid gray;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.content-space-between {
+    justify-content: space-between;
+}
+
+.sort-tools {
+    margin-top: 16px;
+    flex: 0 0 200px;
+}
+
+.margin-bottom-72 {
+    margin-bottom: 72px;
+}
+
+.content-center {
+    justify-content: center;
+    align-items: center;
+}
+
+.r-90 {
+    transform: rotate(90deg);
+}
+
+.login-form {
+    width: 310px;
+}

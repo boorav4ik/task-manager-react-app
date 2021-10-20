@@ -1,19 +1,32 @@
 import React from "react";
 import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
+import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 
-const Index = ({ totalPageCount, curentPage, onPageChange }) => (
-    <Stack spacing={2} justifyContent="space-around">
+const useStyles = makeStyles({
+    pagination: {
+        marginBottom: "1rem",
+        "& > ul": {
+            justifyContent: "center",
+        },
+    },
+});
+
+const Index = ({ totalPageCount, curentPage, onPageChange }) => {
+    const classes = useStyles();
+    return (
         <Pagination
+            className={classes.pagination}
             count={totalPageCount}
-            // defaultPage={curentPage}
+            size="large"
             page={curentPage}
             shape="rounded"
             onChange={(event, value) => onPageChange(value)}
+            showFirstButton
+            showLastButton
         />
-    </Stack>
-);
+    );
+};
 
 Index.propTypes = {
     totalPageCount: PropTypes.number,

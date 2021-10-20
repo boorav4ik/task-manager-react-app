@@ -1,28 +1,22 @@
-import { Stack } from "@mui/material";
 import React from "react";
 import RadioButtons from "../RadioButtonsGroup";
-import AddNewTaskGroup from "../AddNewTaskGroup";
+import SubmitGroup from "../SubmitGroup";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
-    rightStack: {
-        justifyContent: "center",
-        alignItems: "center",
-        flex: "0 0 310px",
-    },
-});
+const fieldList = [
+    { name: "username", label: "Name" },
+    { name: "email", label: "E-mail" },
+    { name: "text", label: "Task discription", rows: 4, multiline: true },
+];
 
 const Index = ({
     sortField,
     sortDirection,
     handleChange,
     handleCreateTask,
-}) => {
-    const classes = useStyles();
-
-    return (
-        <Stack spacing={1} className={classes.rightStack}>
+}) => (
+    <div className="flex-column content-space-between">
+        <div className="flex-column sort-tools">
             <RadioButtons
                 label="Sort Field"
                 options={["username", "email", "status"]}
@@ -35,10 +29,16 @@ const Index = ({
                 value={sortDirection}
                 onChange={(value) => handleChange({ sortDirection: value })}
             />
-            <AddNewTaskGroup onSubmitClick={handleCreateTask} />
-        </Stack>
-    );
-};
+        </div>
+        <SubmitGroup
+            onSubmitClick={handleCreateTask}
+            fieldList={fieldList}
+            className="margin-bottom-72"
+        >
+            Submit
+        </SubmitGroup>
+    </div>
+);
 
 Index.propTypes = {
     sortField: PropTypes.string,

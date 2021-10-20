@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Stack } from "@mui/material";
+import { TextField } from "@mui/material";
 import StatusSelectedMenu from "../StatusSelectedMenu";
 import { Fab, Typography } from "@material-ui/core";
 import Edit from "@material-ui/icons/Edit";
-import { CheckCircle } from "@material-ui/icons";
+import { Check } from "@material-ui/icons";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
@@ -14,12 +14,6 @@ const useStyles = makeStyles({
     marginLeftAuto: {
         marginLeft: "auto",
     },
-    contentViewItemStack: {
-        border: "2px solid gray",
-        padding: 4,
-        borderRadius: 4,
-        flexGrow: 1,
-    },
 });
 
 const Index = ({ data, userIsLogin, handleEditTask }) => {
@@ -27,22 +21,26 @@ const Index = ({ data, userIsLogin, handleEditTask }) => {
     const [taskStatus, setTaskStatus] = useState(data.status);
     const classes = useStyles();
     const [isEditingEnabled, setIsEditingEnabled] = useState(false);
+
     return (
-        <Stack className={classes.contentViewItemStack}>
-            <Typography>{`USERNAME: ${data.username} E-MAIL: ${data.email}`}</Typography>
-            <TextField
-                variant="outlined"
-                fullWidth
-                defaultValue={data.text}
-                InputProps={{
-                    classes: { notchedOutline: classes.noBorder },
-                    readOnly: !isEditingEnabled,
-                }}
-                onChange={(event) => setText(event.target.value)}
-            />
-            <Stack direction="row">
+        <dir className="p-1 flex-column task-box">
+            <dir>
+                <Typography>{`USERNAME: ${data.username} E-MAIL: ${data.email}`}</Typography>
+            </dir>
+            {isEditingEnabled ? (
+                <TextField
+                    variant={"outlined"}
+                    fullWidth
+                    defaultValue={data.text}
+                    onChange={(event) => setText(event.target.value)}
+                />
+            ) : (
+                <Typography>{data.text}</Typography>
+            )}
+
+            <dir className="flex-row">
                 <StatusSelectedMenu
-                    value={data.status}
+                    value={taskStatus}
                     onChange={(index) => setTaskStatus(index)}
                     isEditingEnabled={isEditingEnabled}
                 />
@@ -61,11 +59,11 @@ const Index = ({ data, userIsLogin, handleEditTask }) => {
                             setIsEditingEnabled(!isEditingEnabled);
                         }}
                     >
-                        {isEditingEnabled ? <CheckCircle /> : <Edit />}
+                        {isEditingEnabled ? <Check /> : <Edit />}
                     </Fab>
                 )}
-            </Stack>
-        </Stack>
+            </dir>
+        </dir>
     );
 };
 

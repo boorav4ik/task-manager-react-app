@@ -1,20 +1,24 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearSessionData } from "../../utils/functions/localstoreFunctions";
-import TopPanel from "../../components/panels/TopPanel";
-
+import LeftPanel from "../../components/LeftPanel";
+import { setUserData } from "../../reduxe/actions";
 const Index = () => {
     const { currentPage, userData } = useSelector((state) => ({
         currentPage: state.currentPage,
         userData: state.userData,
     }));
+    const dispatch = useDispatch();
 
     const { username } = userData;
 
-    const handleLogout = () => clearSessionData();
+    const handleLogout = () => {
+        clearSessionData();
+        dispatch(setUserData({}));
+    };
 
     return (
-        <TopPanel
+        <LeftPanel
             username={username}
             currentPage={currentPage}
             handleLogout={handleLogout}

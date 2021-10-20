@@ -1,14 +1,14 @@
-import LoginPageView from "../../../components/LoginPageView";
+import LoginPageView from "../../components/LoginPageView";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginPost } from "../../../api";
-import { setUserData } from "../../../reduxe/actions";
+import { loginPost } from "../../api";
+import { setUserData } from "../../reduxe/actions";
 import {
     getSessionUsername,
     setSessionData,
     clearSessionData,
-} from "../../../utils/functions/localstoreFunctions";
-import getLoginPageMessage from "../../../utils/functions/getLoginPageMessage";
+} from "../../utils/functions/localstoreFunctions";
+import getLoginPageMessage from "../../utils/functions/getLoginPageMessage";
 import PropTypes from "prop-types";
 
 const OK = "ok";

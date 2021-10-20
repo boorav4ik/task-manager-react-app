@@ -1,31 +1,14 @@
-import { Stack } from "@mui/material";
 import React from "react";
 import ContentViewItem from "../ContentViewItem";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
-    contentViewStack: {
-        minWidth: 800,
-        height: "100%",
-    },
-});
-
-const Index = ({ tasks, ...itemProps }) => {
-    const classes = useStyles();
-
-    return (
-        <Stack
-            justifyContent="flex-start"
-            spacing={6}
-            className={classes.contentViewStack}
-        >
-            {tasks.map((item) => (
-                <ContentViewItem key={item.id} data={item} {...itemProps} />
-            ))}
-        </Stack>
-    );
-};
+const Index = ({ tasks, ...itemProps }) => (
+    <dir className="flex-column f-1 p-1">
+        {tasks.map((item) => (
+            <ContentViewItem key={item.id} data={item} {...itemProps} />
+        ))}
+    </dir>
+);
 
 Index.propTypes = {
     tasks: PropTypes.arrayOf(

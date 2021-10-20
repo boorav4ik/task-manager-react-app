@@ -1,15 +1,9 @@
-import { Button, Stack } from "@mui/material";
+import { Button } from "@mui/material";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../TextFieldGroup";
 
-const textFieldList = [
-    { name: "username", label: "Name" },
-    { name: "email", label: "E-mail" },
-    { name: "text", label: "Task discription", rows: 4, multiline: true },
-];
-
-const Index = ({ onSubmitClick }) => {
+const Index = ({ onSubmitClick, fieldList, className, children }) => {
     const [errorList, setErrorList] = useState({});
     const [taskObject, setTaskObject] = useState({});
 
@@ -19,21 +13,31 @@ const Index = ({ onSubmitClick }) => {
     const onSubmit = async () => setErrorList(await onSubmitClick(taskObject));
 
     return (
-        <Stack spacing={1} justifyContent="space-between">
+        <div className={"flex-column content-space-between " + className ?? ""}>
             <TextFieldGroup
-                fieldList={textFieldList}
+                fieldList={fieldList}
                 onChange={handleChange}
                 errorList={errorList}
             />
             <Button variant="contained" onClick={onSubmit}>
-                Sabmit
+                {children}
             </Button>
-        </Stack>
+        </div>
     );
 };
 
 Index.propTypes = {
     onSubmitClick: PropTypes.func,
+    fieldList: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string,
+            label: PropTypes.string,
+            row: PropTypes.number,
+            multiline: PropTypes.bool,
+        })
+    ),
+    children: PropTypes.string,
+    className: PropTypes.string,
 };
 
 export default Index;

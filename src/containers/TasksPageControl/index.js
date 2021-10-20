@@ -1,38 +1,19 @@
 import React, { useEffect, useState } from "react";
-import RightPanel from "../../../components/RightPanel";
-import ContentView from "../../../components/ContentView";
-import BottomPanel from "../../../components/BottomPanel";
-import { Stack } from "@mui/material";
+import RightPanel from "../../components/RightPanel";
+import ContentView from "../../components/ContentView";
+import BottomPanel from "../../components/BottomPanel";
 import PropTypes from "prop-types";
-import { createPost, editPost, getTasksAndPages } from "../../../api";
+import { createPost, editPost, getTasksAndPages } from "../../api";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentPageURL, setUserData } from "../../../reduxe/actions";
-import escapeHtml from "../../../utils/functions/escapeHtml";
-import getSearchParams from "../../../utils/functions/getSearchParams";
-import createSearchParamsString from "../../../utils/functions/createSearchParamsString";
-import { clearSessionData } from "../../../utils/functions/localstoreFunctions";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles({
-    taskPageStack: {
-        width: "100vw",
-        height: "90vh",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    taskConteiner: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "70%",
-        marginLeft: "10%",
-    },
-});
+import { setCurrentPageURL, setUserData } from "../../reduxe/actions";
+import escapeHtml from "../../utils/functions/escapeHtml";
+import getSearchParams from "../../utils/functions/getSearchParams";
+import createSearchParamsString from "../../utils/functions/createSearchParamsString";
+import { clearSessionData } from "../../utils/functions/localstoreFunctions";
 
 const ERROR = "error";
 
 const Index = ({ history, location }) => {
-    const classes = useStyles();
     const userData = useSelector((state) => state.userData);
     const [tasks, setTasks] = useState([]);
     const [totalPageCount, setTotalPageCount] = useState(0);
@@ -62,10 +43,10 @@ const Index = ({ history, location }) => {
     }
 
     const handleChangeSearchParams = (params) => {
-        const curentPageUrl =
+        const currentPageUrl =
             location.pathname + createSearchParamsString(params, searchParams);
-        dispatch(setCurrentPageURL(curentPageUrl));
-        history.push(curentPageUrl);
+        dispatch(setCurrentPageURL(currentPageUrl));
+        history.push(currentPageUrl);
     };
 
     const handleEditTask = async (data) => {
@@ -75,7 +56,7 @@ const Index = ({ history, location }) => {
         });
         if (
             (editResponse.data.status =
-                ERROR && editResponse.data.message.token)
+                ERROR && editResponse.data.message?.token)
         ) {
             clearSessionData();
             dispatch(setUserData({}));
@@ -90,26 +71,26 @@ const Index = ({ history, location }) => {
     }, [location.search]);
 
     return (
-        <Stack className={classes.taskPageStack} spacing={4}>
-            <Stack className={classes.taskConteiner} spacing={4}>
+        <dir className="flex-row f-1">
+            <dir className="flex-column f-1 content-space-between">
                 <ContentView
                     tasks={tasks}
                     userIsLogin={Boolean(userData.username)}
                     handleEditTask={handleEditTask}
                 />
-                <RightPanel
-                    sortDirection={searchParams.sortDirection}
-                    sortField={searchParams.sortField}
-                    handleChange={handleChangeSearchParams}
-                    handleCreateTask={handleCreateTask}
+                <BottomPanel
+                    totalPageCount={totalPageCount}
+                    curentPage={searchParams.page}
+                    onPageChange={(page) => handleChangeSearchParams({ page })}
                 />
-            </Stack>
-            <BottomPanel
-                totalPageCount={totalPageCount}
-                curentPage={searchParams.page}
-                onPageChange={(page) => handleChangeSearchParams({ page })}
+            </dir>
+            <RightPanel
+                sortDirection={searchParams.sortDirection}
+                sortField={searchParams.sortField}
+                handleChange={handleChangeSearchParams}
+                handleCreateTask={handleCreateTask}
             />
-        </Stack>
+        </dir>
     );
 };
 

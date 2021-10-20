@@ -62,7 +62,6 @@ const Index = ({ value, onChange, isEditingEnabled }) => {
     };
 
     const menuClose = () => setAnchorElement(null);
-
     return (
         <>
             <div>
@@ -90,8 +89,8 @@ const Index = ({ value, onChange, isEditingEnabled }) => {
                             <MenuItem
                                 key={key}
                                 className={classes.statusMenuItem}
-                                selected={key === value}
-                                onClick={() => onMenuItemClick(key)}
+                                selected={key == value}
+                                onClick={() => onMenuItemClick(Number(key))}
                             >
                                 {options[key]}
                             </MenuItem>

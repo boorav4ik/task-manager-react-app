@@ -3,10 +3,9 @@ import { setUserData } from "./reduxe/actions";
 import { useDispatch } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { getSessionUsername } from "./utils/functions/localstoreFunctions";
-import { Stack } from "@mui/material";
-import TopPanelControl from "./containers/TopPanelControl";
-import LoginPage from "./containers/pages/LoginPage";
-import TasksPage from "./containers/pages/TasksPage";
+import LeftPanelControl from "./containers/LeftPanelControl";
+import LoginPageControl from "./containers/LoginPageControl";
+import TasksPageControl from "./containers/TasksPageControl";
 
 const defaultTasksPage = {
     pathname: "/tasks",
@@ -20,16 +19,16 @@ function App() {
     }, [dispatch]);
 
     return (
-        <Stack>
-            <TopPanelControl />
+        <dir className="app">
+            <LeftPanelControl />
             <Switch>
-                <Route path="/tasks" component={TasksPage} />
+                <Route path="/tasks" component={TasksPageControl} />
                 <Route exact path="/">
                     <Redirect to={defaultTasksPage} />
                 </Route>
-                <Route path="/login" component={LoginPage} />
+                <Route path="/login" component={LoginPageControl} />
             </Switch>
-        </Stack>
+        </dir>
     );
 }
 
