@@ -1,5 +1,7 @@
 import axios from "axios";
-import { getSessionToken } from "./utils/functions/localstoreFunctions";
+import { toast } from "react-toastify";
+import parseResponseData from "./utils/functions/parseResponseData";
+import { ERROR, SUCCESS, SUCCSES_MESSAGES, FIELDS } from "./utils/const";
 
 export const apiBaseURL = "https://uxcandy.com/~shapoval/test-task-backend/v2";
 
@@ -20,58 +22,43 @@ export async function getTasksAndPages(url) {
             ),
         };
     } catch (error) {
-        console.error(error);
+        toast.error(error);
+        return { tasks: [], totalPageCount: 0 };
     }
 }
 
-export async function loginPost({ username = "", password = "" }) {
-    try {
-        const data = new FormData();
-        data.append("username", username);
-        data.append("password", password);
-        const config = {
-            method: "post",
-            url: `/login?developer=${developer}`,
-            data: data,
-        };
+export async function post(requestParams, dataFields) {
+    const { prefix, id } = requestParams;
 
-        return await api(config);
-    } catch (error) {
-        console.error(error);
-    }
-}
+    const data = new FormData();
+    Object.keys(dataFields).forEach((key) => {
+        data.append(key, dataFields[key]);
+    });
 
-export async function createPost({ username, email, text }) {
+    const config = {
+        method: "post",
+        url: `/${prefix}${id ? `/${id}` : ""}?developer=${developer}`,
+        data: data,
+    };
     try {
-        const data = new FormData();
-        data.append("username", username);
-        data.append("email", email);
-        data.append("text", text);
-        const config = {
-            method: "post",
-            url: `/create?developer=${developer}`,
-            data: data,
-        };
-        return await api(config);
-    } catch (error) {
-        console.error(error);
-    }
-}
+        const response = await api(config);
 
-export async function editPost({ id, text, taskStatus }) {
-    try {
-        const data = new FormData();
-        data.append("id", id);
-        data.append("text", text);
-        data.append("status", taskStatus);
-        data.append("token", getSessionToken());
-        const config = {
-            method: "post",
-            url: `/edit/${id}?developer=${developer}`,
-            data: data,
-        };
-        return await api(config);
+        const { result, message } = parseResponseData(response.data);
+        switch (result) {
+            case ERROR:
+                Object.keys(message).forEach((key) => {
+                    toast.error(`${FIELDS[key]}: ${message[key]}`);
+                });
+                break;
+            case SUCCESS:
+                toast.success(SUCCSES_MESSAGES[prefix]);
+                break;
+            default:
+                break;
+        }
+        return { result, message };
     } catch (error) {
-        console.error(error);
+        toast.error(error);
+        return parseResponseData();
     }
 }

@@ -3,15 +3,17 @@ import RightPanel from "../../components/RightPanel";
 import ContentView from "../../components/ContentView";
 import BottomPanel from "../../components/BottomPanel";
 import PropTypes from "prop-types";
-import { createPost, editPost, getTasksAndPages } from "../../api";
+import { getTasksAndPages, post } from "../../api";
+import { SUCCESS, ERROR } from "../../utils/const";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentPageURL, setUserData } from "../../reduxe/actions";
 import escapeHtml from "../../utils/functions/escapeHtml";
 import getSearchParams from "../../utils/functions/getSearchParams";
 import createSearchParamsString from "../../utils/functions/createSearchParamsString";
-import { clearSessionData } from "../../utils/functions/localstoreFunctions";
-
-const ERROR = "error";
+import {
+    clearSessionData,
+    getSessionToken,
+} from "../../utils/functions/localstoreFunctions";
 
 const Index = ({ history, location }) => {
     const userData = useSelector((state) => state.userData);
@@ -29,17 +31,19 @@ const Index = ({ history, location }) => {
     }
 
     async function handleCreateTask({ username = "", email = "", text = "" }) {
-        const createResponse = await createPost({
-            username,
-            email,
-            text: escapeHtml(text),
-        });
-        if (createResponse.data.status === "error") {
-            return createResponse.data.message;
-        } else {
+        const { result, message } = await post(
+            { prefix: "create" },
+            {
+                username,
+                email,
+                text: escapeHtml(text),
+            }
+        );
+        if (result === SUCCESS) {
             uploadData(searchParams);
             return {};
         }
+        return message;
     }
 
     const handleChangeSearchParams = (params) => {
@@ -49,21 +53,20 @@ const Index = ({ history, location }) => {
         history.push(currentPageUrl);
     };
 
-    const handleEditTask = async (data) => {
-        const editResponse = await editPost({
-            ...data,
-            text: escapeHtml(data.text),
-        });
-        if (
-            (editResponse.data.status =
-                ERROR && editResponse.data.message?.token)
-        ) {
+    const handleEditTask = async ({ id, text }) => {
+        const { result, message } = await post(
+            { prefix: `edit`, id },
+            {
+                text: escapeHtml(text),
+                token: getSessionToken(),
+            }
+        );
+        if (result === ERROR && message.token) {
             clearSessionData();
             dispatch(setUserData({}));
             history.push("/login/0");
-        } else {
-            uploadData();
         }
+        if (result === SUCCESS) uploadData();
     };
 
     useEffect(() => {

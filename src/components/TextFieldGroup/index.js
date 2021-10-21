@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 const Index = ({ fieldList, onChange, errorList }) =>
     fieldList.map(({ name, ...props }) => (
         <TextField
+            className="mb-1"
             key={name}
             name={name}
             {...props}

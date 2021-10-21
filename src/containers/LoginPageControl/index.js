@@ -1,7 +1,8 @@
 import LoginPageView from "../../components/LoginPageView";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginPost } from "../../api";
+import { post } from "../../api";
+import { SUCCESS } from "../../utils/const";
 import { setUserData } from "../../reduxe/actions";
 import {
     getSessionUsername,
@@ -10,8 +11,6 @@ import {
 } from "../../utils/functions/localstoreFunctions";
 import getLoginPageMessage from "../../utils/functions/getLoginPageMessage";
 import PropTypes from "prop-types";
-
-const OK = "ok";
 
 const Index = ({ location }) => {
     const { currentPageUrl, userData } = useSelector((state) => ({
@@ -27,16 +26,16 @@ const Index = ({ location }) => {
     }, [username]);
 
     const handleLogin = async (loginParams) => {
-        const loginResponse = await loginPost(loginParams);
-        if (loginResponse.status === 200 && loginResponse.data.status === OK) {
-            setSessionData(
-                loginParams.username,
-                loginResponse.data.message.token
-            );
+        const { result, message } = await post(
+            { prefix: "login" },
+            loginParams
+        );
+
+        if (result === SUCCESS) {
+            setSessionData(loginParams.username, message.token);
             dispatch(setUserData({ username: loginParams.username }));
-            return {};
         }
-        return loginResponse.data.message;
+        return message;
     };
 
     const handleLogout = () => {

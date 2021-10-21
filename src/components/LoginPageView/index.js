@@ -3,11 +3,7 @@ import { Button, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import SubmitGroup from "../SubmitGroup";
-
-const fieldList = [
-    { name: "username", label: "Username" },
-    { name: "password", label: "Password" },
-];
+import { loginFieldList } from "../../utils/const";
 
 const Index = ({ userData, currentPageUrl, handleLogin, message }) => (
     <div className="flex-column f-1 content-center">
@@ -27,7 +23,7 @@ const Index = ({ userData, currentPageUrl, handleLogin, message }) => (
                 <Typography {...message} />
                 <SubmitGroup
                     onSubmitClick={handleLogin}
-                    fieldList={fieldList}
+                    fieldList={loginFieldList}
                     className="login-form"
                 >
                     Login

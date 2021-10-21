@@ -2,12 +2,7 @@ import React from "react";
 import RadioButtons from "../RadioButtonsGroup";
 import SubmitGroup from "../SubmitGroup";
 import PropTypes from "prop-types";
-
-const fieldList = [
-    { name: "username", label: "Name" },
-    { name: "email", label: "E-mail" },
-    { name: "text", label: "Task discription", rows: 4, multiline: true },
-];
+import { createTaskFieldList } from "../../utils/const";
 
 const Index = ({
     sortField,
@@ -32,8 +27,8 @@ const Index = ({
         </div>
         <SubmitGroup
             onSubmitClick={handleCreateTask}
-            fieldList={fieldList}
-            className="margin-bottom-72"
+            fieldList={createTaskFieldList}
+            className="mb-78"
         >
             Submit
         </SubmitGroup>

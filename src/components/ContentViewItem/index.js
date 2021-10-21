@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField } from "@mui/material";
 import StatusSelectedMenu from "../StatusSelectedMenu";
-import { Fab, Typography } from "@material-ui/core";
+import { Chip, Fab, Typography } from "@material-ui/core";
 import Edit from "@material-ui/icons/Edit";
 import { Check } from "@material-ui/icons";
 import PropTypes from "prop-types";
+import { AlternateEmail, PersonOutline } from "@mui/icons-material";
 
 const useStyles = makeStyles({
     noBorder: {
@@ -24,8 +25,9 @@ const Index = ({ data, userIsLogin, handleEditTask }) => {
 
     return (
         <dir className="p-1 flex-column task-box">
-            <dir>
-                <Typography>{`USERNAME: ${data.username} E-MAIL: ${data.email}`}</Typography>
+            <dir className="flex-row">
+                <Chip icon={<PersonOutline />} label={data.username} />
+                <Chip icon={<AlternateEmail />} label={data.email} />
             </dir>
             {isEditingEnabled ? (
                 <TextField

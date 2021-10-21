@@ -6,6 +6,8 @@ import { store } from "./reduxe/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -14,6 +16,17 @@ ReactDOM.render(
                 <App />
             </BrowserRouter>
         </Provider>
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+        />
     </React.StrictMode>,
     document.getElementById("root")
 );

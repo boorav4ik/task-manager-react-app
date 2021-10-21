@@ -59,8 +59,8 @@ dir {
     flex: 0 0 200px;
 }
 
-.margin-bottom-72 {
-    margin-bottom: 72px;
+.mb-78 {
+    margin-bottom: 78px;
 }
 
 .content-center {
@@ -74,4 +74,8 @@ dir {
 
 .login-form {
     width: 310px;
+}
+
+.mb-1 {
+    margin-bottom: 1rem !important;
 }
